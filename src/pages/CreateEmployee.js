@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from "react-router-dom";
+import states from '../data/states';
+import departments from '../data/departements';
+import DatePicker from 'react-datepicker';
+import { format } from 'date-fns';
+import 'react-datepicker/dist/react-datepicker.module.css'
 
 function CreateEmployee() {
   const [formData, setFormData] = useState({
@@ -13,59 +18,6 @@ function CreateEmployee() {
     zipCode: '',
     department: 'Sales',
   });
-
-  const states = [
-    { label: 'Alabama', value: 'AL' },
-    { label: 'Alaska', value: 'AK' },
-    { label: 'Arizona', value: 'AZ' },
-    { label: 'Arkansas', value: 'AR' },
-    { label: 'California', value: 'CA' },
-    { label: 'Colorado', value: 'CO' },
-    { label: 'Connecticut', value: 'CT' },
-    { label: 'Delaware', value: 'DE' },
-    { label: 'Florida', value: 'FL' },
-    { label: 'Georgia', value: 'GA' },
-    { label: 'Hawaii', value: 'HI' },
-    { label: 'Idaho', value: 'ID' },
-    { label: 'Illinois', value: 'IL' },
-    { label: 'Indiana', value: 'IN' },
-    { label: 'Iowa', value: 'IA' },
-    { label: 'Kansas', value: 'KS' },
-    { label: 'Kentucky', value: 'KY' },
-    { label: 'Louisiana', value: 'LA' },
-    { label: 'Maine', value: 'ME' },
-    { label: 'Maryland', value: 'MD' },
-    { label: 'Massachusetts', value: 'MA' },
-    { label: 'Michigan', value: 'MI' },
-    { label: 'Minnesota', value: 'MN' },
-    { label: 'Mississippi', value: 'MS' },
-    { label: 'Missouri', value: 'MO' },
-    { label: 'Montana', value: 'MT' },
-    { label: 'Nebraska', value: 'NE' },
-    { label: 'Nevada', value: 'NV' },
-    { label: 'New Hampshire', value: 'NH' },
-    { label: 'New Jersey', value: 'NJ' },
-    { label: 'New Mexico', value: 'NM' },
-    { label: 'New York', value: 'NY' },
-    { label: 'North Carolina', value: 'NC' },
-    { label: 'North Dakota', value: 'ND' },
-    { label: 'Ohio', value: 'OH' },
-    { label: 'Oklahoma', value: 'OK' },
-    { label: 'Oregon', value: 'OR' },
-    { label: 'Pennsylvania', value: 'PA' },
-    { label: 'Rhode Island', value: 'RI' },
-    { label: 'South Carolina', value: 'SC' },
-    { label: 'South Dakota', value: 'SD' },
-    { label: 'Tennessee', value: 'TN' },
-    { label: 'Texas', value: 'TX' },
-    { label: 'Utah', value: 'UT' },
-    { label: 'Vermont', value: 'VT' },
-    { label: 'Virginia', value: 'VA' },
-    { label: 'Washington', value: 'WA' },
-    { label: 'West Virginia', value: 'WV' },
-    { label: 'Wisconsin', value: 'WI' },
-    { label: 'Wyoming', value: 'WY' },
-  ];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -83,6 +35,11 @@ function CreateEmployee() {
     alert('Employee Created!');
   };
 
+  const handleDateChange = (date, name) => {
+    const formattedDate = format(date, 'MM/dd/yyyy');
+    setFormData({ ...formData, [name]: formattedDate });
+  };
+
   return (
     <div className="container">
       <h1 className="title">HRnet</h1>
@@ -96,10 +53,18 @@ function CreateEmployee() {
         <input type="text" id="last-name" name="lastName" value={formData.lastName} onChange={handleChange} />
 
         <label htmlFor="date-of-birth">Date of Birth</label>
-        <input type="date" id="date-of-birth" name="dateOfBirth" value={formData.dateOfBirth} onChange={handleChange} />
+        <DatePicker 
+            selected={formData.dateOfBirth}
+            onChange={(date) => handleDateChange(date, 'dateOfBirth')}
+            dateFormat="MM/dd/yyyy"
+        />
 
         <label htmlFor="start-date">Start Date</label>
-        <input type="date" id="start-date" name="startDate" value={formData.startDate} onChange={handleChange} />
+        <DatePicker 
+            selected={formData.startDate}
+            onChange={(date) => handleDateChange(date, 'startDate')}
+            dateFormat="MM/dd/yyyy"
+        />
 
         <fieldset className="address">
           <legend>Address</legend>
@@ -124,11 +89,11 @@ function CreateEmployee() {
 
         <label htmlFor="department">Department</label>
         <select id="department" name="department" value={formData.department} onChange={handleChange}>
-            <option value="Sales">Sales</option>
-            <option value="Marketing">Marketing</option>
-            <option value="Engineering">Engineering</option>
-            <option value="Human Resources">Human Resources</option>
-            <option value="Legal">Legal</option>
+        {departments.map((dept, index) => (
+            <option key={index} value={dept}>
+                {dept}
+            </option>
+        ))}
         </select>
         <br/>
         <button type="submit">Save</button>
