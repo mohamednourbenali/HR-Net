@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from "react-router-dom";
 
 function CreateEmployee() {
   const [formData, setFormData] = useState({
@@ -85,7 +86,7 @@ function CreateEmployee() {
   return (
     <div className="container">
       <h1 className="title">HRnet</h1>
-      <a href="/employee-list">View Current Employees</a>
+      <Link to="/employee-list">View Current Employees</Link>
       <h2>Create Employee</h2>
       <form onSubmit={handleSaveEmployee} id="create-employee">
         <label htmlFor="first-name">First Name</label>

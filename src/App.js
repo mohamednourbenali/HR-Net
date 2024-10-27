@@ -1,12 +1,17 @@
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Link} from 'react-router-dom';
 import CreateEmployee from './pages/CreateEmployee';
-
+import EmployeeList from './pages/EmployeeList';
+import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <CreateEmployee />
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<CreateEmployee />} />
+        <Route path="/employee-list" element={<EmployeeList />} />
+      </Routes>
+    </Router>
   );
 }
 
