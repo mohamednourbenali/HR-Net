@@ -3,8 +3,9 @@ import { Link } from "react-router-dom";
 import states from '../data/states';
 import departments from '../data/departements';
 import DatePicker from 'react-datepicker';
+import Modal from '../components/Modal.js'
 import { format } from 'date-fns';
-import 'react-datepicker/dist/react-datepicker.module.css'
+import 'react-datepicker/dist/react-datepicker.module.css';
 
 function CreateEmployee() {
   const [formData, setFormData] = useState({
@@ -19,6 +20,8 @@ function CreateEmployee() {
     department: 'Sales',
   });
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -32,13 +35,17 @@ function CreateEmployee() {
     const employees = JSON.parse(localStorage.getItem('employees')) || [];
     employees.push(formData);
     localStorage.setItem('employees', JSON.stringify(employees));
-    alert('Employee Created!');
+    setIsModalOpen(true);
   };
 
   const handleDateChange = (date, name) => {
     const formattedDate = format(date, 'MM/dd/yyyy');
     setFormData({ ...formData, [name]: formattedDate });
   };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  }
 
   return (
     <div className="container">
@@ -98,6 +105,7 @@ function CreateEmployee() {
         <br/>
         <button type="submit">Save</button>
       </form>
+      <Modal isOpen={isModalOpen} onClose={closeModal} />
     </div>
   );
 }
