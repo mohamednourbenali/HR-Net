@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import states from '../data/states';
 import departments from '../data/departements';
 import DatePicker from 'react-datepicker';
-import Modal from '../components/Modal.js'
+import Modal from '../components/Modal.js';
+import Dropdown from '../components/Dropdown.js';
 import { format } from 'date-fns';
 import 'react-datepicker/dist/react-datepicker.module.css';
 
@@ -82,26 +83,24 @@ function CreateEmployee() {
           <input type="text" id="city" name="city" value={formData.city} onChange={handleChange} />
 
           <label htmlFor="state">State</label>
-          <select id="state" name="state" value={formData.state} onChange={handleChange}>
-            {states.map((state) => (
-                <option key={state.value} value={state.value}>
-                    {state.label}
-                </option>
-            ))}
-          </select>
+          <Dropdown 
+            label="State" 
+            options={states.map(state => ({ label: state.label, value: state.value }))}
+            value={formData.state} 
+            onChange={(e) => setFormData({ ...formData, state: e.target.value })} 
+          />
 
           <label htmlFor="zip-code">Zip Code</label>
           <input type="number" id="zip-code" name="zipCode" value={formData.zipCode} onChange={handleChange} />
         </fieldset>
 
         <label htmlFor="department">Department</label>
-        <select id="department" name="department" value={formData.department} onChange={handleChange}>
-        {departments.map((dept, index) => (
-            <option key={index} value={dept}>
-                {dept}
-            </option>
-        ))}
-        </select>
+        <Dropdown
+          label="Department"
+          options={departments.map(dept => ({ label: dept, value: dept }))}
+          value={formData.department}
+          onChange={(e) => setFormData({ ...formData, department: e.target.value })}
+        />
         <br/>
         <button type="submit">Save</button>
       </form>

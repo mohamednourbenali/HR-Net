@@ -1,57 +1,44 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import '../App.css';
+import DataTable from 'react-data-table-component';
 
 function EmployeeList() {
-  const [employees, setEmployees] = useState([]);
+    const [employees, setEmployees] = useState([]);
 
-  useEffect(() => {
-    const savedEmployees = JSON.parse(localStorage.getItem('employees')) || [];
-    setEmployees(savedEmployees);
-  }, []);
+    useEffect(() => {
+        const storedEmployees = localStorage.getItem('employees');
+        if (storedEmployees) {
+            setEmployees(JSON.parse(storedEmployees));
+        }
+    }, []);
 
-  return (
-    <div className="container">
-      <h1>Current Employees</h1>
-      <table className="employee-table">
-        <thead>
-          <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Start Date</th>
-            <th>Department</th>
-            <th>Date of Birth</th>
-            <th>Street</th>
-            <th>City</th>
-            <th>State</th>
-            <th>Zip Code</th>
-          </tr>
-        </thead>
-        <tbody>
-          {employees.length > 0 ? (
-            employees.map((employee, index) => (
-              <tr key={index}>
-                <td>{employee.firstName}</td>
-                <td>{employee.lastName}</td>
-                <td>{employee.startDate}</td>
-                <td>{employee.department}</td>
-                <td>{employee.dateOfBirth}</td>
-                <td>{employee.street}</td>
-                <td>{employee.city}</td>
-                <td>{employee.state}</td>
-                <td>{employee.zipCode}</td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="9">No employees found</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-      <Link to="/">Home</Link>
-    </div>
-  );
+
+    const columns = [
+        { name: 'First Name', selector: row => row.firstName, sortable: true },
+        { name: 'Last Name', selector: row => row.lastName, sortable: true },
+        { name: 'Start Date', selector: row => row.startDate, sortable: true },
+        { name: 'Department', selector: row => row.department, sortable: true },
+        { name: 'Date of Birth', selector: row => row.dateOfBirth, sortable: true },
+        { name: 'Street', selector: row => row.street, sortable: false },
+        { name: 'City', selector: row => row.city, sortable: true },
+        { name: 'State', selector: row => row.state, sortable: true },
+        { name: 'Zip Code', selector: row => row.zipCode, sortable: true }
+    ];
+
+    return (
+        <div className="container">
+            <h1>Current Employees</h1>
+            <DataTable
+                columns={columns}
+                data={employees}
+                tableId="employee"
+                sortId="startDate"
+                paginationRowsPerPageOptions={[10, 25, 50, 100]}
+                striped
+            />
+            <Link to="/"> Home </Link>
+        </div>
+    );
 }
 
 export default EmployeeList;
