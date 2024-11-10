@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import states from '../data/states';
 import departments from '../data/departements';
 import DatePicker from 'react-datepicker';
-import Modal from '../components/Modal.js';
-import Dropdown from '../components/Dropdown.js';
+import Modal from '../components/Modal.js'
+import Dropdown  from "my-dropdown-library"
 import { format } from 'date-fns';
 import 'react-datepicker/dist/react-datepicker.module.css';
 
@@ -61,17 +61,21 @@ function CreateEmployee() {
         <input type="text" id="last-name" name="lastName" value={formData.lastName} onChange={handleChange} />
 
         <label htmlFor="date-of-birth">Date of Birth</label>
-        <DatePicker 
-            selected={formData.dateOfBirth}
-            onChange={(date) => handleDateChange(date, 'dateOfBirth')}
-            dateFormat="MM/dd/yyyy"
+        <DatePicker
+          label="Birth date"
+          className="birth-date"
+          selected={formData.dateOfBirth}
+          onChange={(date) => handleDateChange(date, 'dateOfBirth')}
+          dateFormat="MM/dd/yyyy"
         />
 
         <label htmlFor="start-date">Start Date</label>
         <DatePicker 
-            selected={formData.startDate}
-            onChange={(date) => handleDateChange(date, 'startDate')}
-            dateFormat="MM/dd/yyyy"
+          label="starting date"
+          className="start-date"
+          selected={formData.startDate}
+          onChange={(date) => handleDateChange(date, 'startDate')}
+          dateFormat="MM/dd/yyyy"
         />
 
         <fieldset className="address">
