@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import { addEmployee } from '../store/store.js';
 import states from '../data/states';
 import departments from '../data/departements';
 import DatePicker from 'react-datepicker';
@@ -9,6 +11,7 @@ import { format, parseISO, } from 'date-fns';
 import 'react-datepicker/dist/react-datepicker.module.css';
 
 function CreateEmployee() {
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -49,12 +52,18 @@ function CreateEmployee() {
     setIsModalOpen(false);
   }
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(addEmployee(formData));
+    setIsModalOpen(true);
+  };
+
   return (
     <div className="container">
       <h1 className="title">HRnet</h1>
       <Link to="/employee-list">View Current Employees</Link>
       <h2>Create Employee</h2>
-      <form onSubmit={handleSaveEmployee} id="create-employee">
+      <form onSubmit={handleSubmit} id="create-employee">
         <label htmlFor="first-name">First Name</label>
         <input type="text" id="first-name" name="firstName" value={formData.firstName} onChange={handleChange} />
 

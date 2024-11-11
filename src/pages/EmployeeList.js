@@ -1,20 +1,13 @@
 import React, { useEffect, useState, useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import DataTable from 'react-data-table-component';
 import SubHeaderComponent from '../components/SubHeaderComponent';
 
 function EmployeeList() {
-    const [employees, setEmployees] = useState([]);
+    const employees = useSelector((state) => state.employees.employees);
     const [filterText, setFilterText] = useState('');
     const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
-
-    useEffect(() => {
-        const storedEmployees = localStorage.getItem('employees');
-        if (storedEmployees) {
-            setEmployees(JSON.parse(storedEmployees));
-        }
-    }, []);
-
 
     const columns = [
         { name: 'First Name', selector: row => row.firstName, sortable: true },
