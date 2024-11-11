@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import DataTable from 'react-data-table-component';
+import SubHeaderComponent from '../components/SubHeaderComponent';
 
 function EmployeeList() {
     const [employees, setEmployees] = useState([]);
+    const [filterText, setFilterText] = useState('');
+    const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
 
     useEffect(() => {
         const storedEmployees = localStorage.getItem('employees');
@@ -25,15 +28,34 @@ function EmployeeList() {
         { name: 'Zip Code', selector: row => row.zipCode, sortable: true }
     ];
 
+    const filteredItems = employees.filter(employee =>
+        Object.values(employee)
+            .join(' ')
+            .toLowerCase()
+            .includes(filterText.toLowerCase())
+    );
+
+    const subHeaderComponentMemo = useMemo(() => {    
+        return (
+          <SubHeaderComponent
+            filterText={filterText}
+            onFilter={e => setFilterText(e.target.value)}
+          />
+        );
+      }, [filterText, resetPaginationToggle]);
+
     return (
         <div className="container">
             <h1>Current Employees</h1>
             <DataTable
                 columns={columns}
-                data={employees}
+                data={filteredItems}
                 tableId="employee"
                 sortId="startDate"
                 striped
+                pagination
+                subHeader
+                subHeaderComponent={subHeaderComponentMemo}
             />
             <Link to="/"> Home </Link>
         </div>
