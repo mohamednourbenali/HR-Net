@@ -5,7 +5,7 @@ import departments from '../data/departements';
 import DatePicker from 'react-datepicker';
 import Modal from '../components/Modal.js'
 import Dropdown  from "my-dropdown-library"
-import { format } from 'date-fns';
+import { format, parseISO, } from 'date-fns';
 import 'react-datepicker/dist/react-datepicker.module.css';
 
 function CreateEmployee() {
@@ -40,7 +40,8 @@ function CreateEmployee() {
   };
 
   const handleDateChange = (date, name) => {
-    const formattedDate = format(date, 'MM/dd/yyyy');
+    const parsedDate = typeof date === 'string' ? parseISO(date) : date;
+    const formattedDate = format(parsedDate, 'MM/dd/yyyy');
     setFormData({ ...formData, [name]: formattedDate });
   };
 
@@ -86,9 +87,8 @@ function CreateEmployee() {
           <label htmlFor="city">City</label>
           <input type="text" id="city" name="city" value={formData.city} onChange={handleChange} />
 
-          <label htmlFor="state">State</label>
           <Dropdown 
-            label="State" 
+            label="State"  
             options={states.map(state => ({ label: state.label, value: state.value }))}
             value={formData.state} 
             onChange={(e) => setFormData({ ...formData, state: e.target.value })} 
@@ -98,7 +98,6 @@ function CreateEmployee() {
           <input type="number" id="zip-code" name="zipCode" value={formData.zipCode} onChange={handleChange} />
         </fieldset>
 
-        <label htmlFor="department">Department</label>
         <Dropdown
           label="Department"
           options={departments.map(dept => ({ label: dept, value: dept }))}

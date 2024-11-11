@@ -33,7 +33,6 @@ function EmployeeList() {
                 data={employees}
                 tableId="employee"
                 sortId="startDate"
-                paginationRowsPerPageOptions={[10, 25, 50, 100]}
                 striped
             />
             <Link to="/"> Home </Link>
